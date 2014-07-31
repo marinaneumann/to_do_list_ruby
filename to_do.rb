@@ -59,10 +59,19 @@ def see_list
     @list_list.each do |list|
       if response == @list_number
         @selected_list = list
-      puts @selected_list.name
       end
     end
+    @selected_name = @selected_list.name
+    puts @selected_list.name
    puts "\n"
+
+   puts "Type 'add' to add a task or 'view' to view your current list"
+    response = gets.chomp
+    if response == 'add'
+      add_task_ui
+    elsif response == 'view'
+      list_tasks
+    end
 end
 
 def add_task_ui
@@ -75,8 +84,8 @@ end
 
 def list_tasks
   puts "Here are all of your tasks:"
-  @list.each do |task|
-    puts @list.index(task).to_s + " " + task.description
+  @selected_list.tasks.each do |task|
+    puts @selected_list.tasks.index(task).to_s + " " + task
   end
   puts "\n"
   puts "Would you like to delete any of the tasks?"
@@ -84,7 +93,7 @@ def list_tasks
     if list_tasks_response == "yes" || list_tasks_response == "y"
       puts "Type the number of the task you would like to delete"
       user_task_delete = gets.chomp
-      @list.slice!(user_task_delete.to_i)
+      @selected_list.tasks.slice!(user_task_delete.to_i)
     elsif list_tasks_response == "no" || list_tasks_response == "n"
       main_menu
   end
