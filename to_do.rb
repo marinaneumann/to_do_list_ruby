@@ -1,29 +1,75 @@
 require './lib/task'
 
-@list = []
+@list_list = []
 
 def main_menu
   loop do
-    puts "Press 'a' to add a task or 'l to list all of your tasks."
-    puts "Press 'x' to exit."
+    puts "Press 'l' to add a new list"
+    puts "Press 's' to see all your lists"
+    puts "Press 'x' to exit"
     main_choice = gets.chomp
-    if main_choice == 'a'
-      add_task
-    elsif main_choice == 'l'
-      list_tasks
+    if main_choice == 'l'
+      add_list
+    elsif main_choice == 's'
+      see_list
     elsif main_choice == 'x'
       puts "Goodbye!"
       exit
-    else
-      puts "Sorry that wasn't a valid option."
     end
+
+    # puts "Press 'a' to add a task or 'l to list all of your tasks."
+    # puts "Press 'x' to exit."
+    # main_choice = gets.chomp
+    # if main_choice == 'a'
+    #   add_task
+    # elsif main_choice == 'l'
+    #   list_tasks
+    # elsif main_choice == 'x'
+    #   puts "Goodbye!"
+    #   exit
+    # else
+    #   puts "Sorry that wasn't a valid option."
+    # end
   end
 end
 
-def add_task
+def add_list
+  puts "Enter the name of the new list:"
+  user_list_name = gets.chomp
+  @list_list << List.new(user_list_name)
+  puts "List created.\n\n"
+
+  puts "Would you like to add a task to a list?"
+  response = gets.chomp
+  if response == "yes" || response == "y"
+    see_list
+  elsif response == "no" || response == "n"
+    main_menu
+  end
+end
+
+def see_list
+  puts "Here are all of your lists:"
+  @list_list.each do |list_item|
+    @list_number = @list_list.index(list_item).to_s
+    puts @list_number + " " + list_item.name
+  end
+  puts "Type the number of the list you would like to go into or press 'x' to return to the main menu"
+   response = gets.chomp
+    @list_list.each do |list|
+      if response == @list_number
+        @selected_list = list
+      puts @selected_list.name
+      end
+    end
+   puts "\n"
+end
+
+def add_task_ui
   puts "Enter a description of the new task:"
   user_description = gets.chomp
-  @list << Task.new(user_description)
+  # @tasks << Task.new(user_description)
+  @selected_list.add_task(user_description)
   puts "Task added.\n\n"
 end
 
@@ -42,7 +88,6 @@ def list_tasks
     elsif list_tasks_response == "no" || list_tasks_response == "n"
       main_menu
   end
-
 end
 
 main_menu
